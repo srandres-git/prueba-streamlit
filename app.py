@@ -24,7 +24,8 @@ for banco, cuentas in CUENTAS.items():
         uploaded_files[(banco,cuenta)] = st.file_uploader(
             f"Cuenta {cuenta}",
             type=['csv', 'xlsx', 'txt'],
-            accept_multiple_files=False
+            accept_multiple_files=False,
+            width=100
         )
 if uploaded_files:
     for (banco,cuenta), file in uploaded_files.items():

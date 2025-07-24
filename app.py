@@ -16,15 +16,12 @@ bank = st.sidebar.selectbox("Selecciona banco", list(CUENTAS.keys()))
 cuentas = CUENTAS[bank]
 account = st.sidebar.selectbox("Selecciona cuenta", cuentas)
 
-def load_file(uploaded_file):
-    return uploaded_file
+def get_cta():
+    st.markdown(f"{bank},{account}")
 
 uploaded_files = st.file_uploader(
     "Arrastra uno o más archivos de estados de cuenta",
     type=['csv', 'xlsx', 'txt'],
-    accept_multiple_files=True
+    accept_multiple_files=True,
+    on_change=get_cta
 )
-
-if uploaded_files:
-    for f in uploaded_files:
-        st.markdown(f"{bank},{account}")

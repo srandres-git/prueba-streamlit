@@ -9,19 +9,23 @@ CUENTAS = {
     'Banorte': ['858'],
     'PNC': ['865']
 }
-st.title("Asignador de Claves de Estado de Cuenta")
+st.title("Prueba conciliación")
 
-# Sidebar
-bank = st.sidebar.selectbox("Selecciona banco", list(CUENTAS.keys()))
-cuentas = CUENTAS[bank]
-account = st.sidebar.selectbox("Selecciona cuenta", cuentas)
+# # Sidebar
+# bank = st.sidebar.selectbox("Selecciona banco", list(CUENTAS.keys()))
+# cuentas = CUENTAS[bank]
+# account = st.sidebar.selectbox("Selecciona cuenta", cuentas)
 
-def get_cta():
-    st.markdown(f"{bank},{account}")
-
-uploaded_files = st.file_uploader(
-    "Arrastra uno o más archivos de estados de cuenta",
-    type=['csv', 'xlsx', 'txt'],
-    accept_multiple_files=True,
-    on_change=get_cta
-)
+st.title("Arrastra los estados de cuenta")
+uploaded_files = {}
+for banco, cuentas in CUENTAS.items():
+    st.markdown(f"**{banco}**")
+    for cuenta in cuentas:
+        uploaded_files[(banco,cuenta)] = st.file_uploader(
+            f"Cuenta {cuenta}",
+            type=['csv', 'xlsx', 'txt'],
+            accept_multiple_files=False
+        )
+if uploaded_files:
+    for (banco,cuenta), file in uploaded_files.items():
+        st.markdown(f'archivo subido de {banco} {cuenta}')

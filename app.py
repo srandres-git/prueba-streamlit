@@ -28,4 +28,5 @@ for banco, cuentas in CUENTAS.items():
         )
 if uploaded_files:
     for (banco,cuenta), file in uploaded_files.items():
-        st.markdown(f'archivo subido de {banco} {cuenta}')
+        if file:
+            st.markdown(f'archivo subido de {banco} {cuenta}')

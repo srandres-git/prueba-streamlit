@@ -19,12 +19,13 @@ st.title("Prueba conciliación")
 st.header("Arrastra los estados de cuenta")
 uploaded_files = {}
 # Creamos las tabs por banco
-tabs = {banco: t for banco in CUENTAS.keys() for t in st.tabs(CUENTAS.keys())}
+tabs = st.tabs(CUENTAS.keys())
+tab_dict = {banco: t for banco in CUENTAS.keys() for t in tabs}
 # Creamos las columnas contenedor
 cols = {(b,c):None for b,ctas in CUENTAS.items() for c in ctas}
 for banco, cuentas in CUENTAS.items():
-    tabs[banco].subheader(banco)
-    col_list = tabs[banco].columns(len(cuentas))
+    tab_dict[banco].subheader(banco)
+    col_list = tab_dict[banco].columns(len(cuentas))
     for i,cuenta in enumerate(cuentas):
         cols[(banco,cuenta)]= col_list[i]
 

@@ -18,15 +18,17 @@ st.title("Prueba conciliación")
 
 st.header("Arrastra los estados de cuenta")
 uploaded_files = {}
+# Creamos las tabs por banco
+tabs = {banco: t for banco in CUENTAS.keys() for t in st.tabs(CUENTAS.keys())}
 # Creamos las columnas contenedor
 cols = {(b,c):None for b,ctas in CUENTAS.items() for c in ctas}
 for banco, cuentas in CUENTAS.items():
-    st.subheader(banco)
-    col_list = st.columns(len(cuentas))
+    tabs[banco].subheader(banco)
+    col_list = tabs[banco].columns(len(cuentas))
     for i,cuenta in enumerate(cuentas):
         cols[(banco,cuenta)]= col_list[i]
 
-
+# Agregamos los widget para arrastrar el archivo
 for banco, cuentas in CUENTAS.items():
     for cuenta in cuentas:
         uploaded_files[(banco,cuenta)] = cols[(banco,cuenta)].file_uploader(

@@ -40,3 +40,10 @@ if uploaded_files:
     for (banco,cuenta), file in uploaded_files.items():
         if file:
             cols[(banco,cuenta)].markdown(f'archivo subido de {banco} {cuenta}')
+
+st.header("Arrastra el reporte de caja de SAP")
+uploaded_files['sap'] = st.file_uploader(
+    'Caja Partidas Individuales',
+    type=['csv', 'xlsx'],
+    accept_multiple_files=False
+)

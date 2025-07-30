@@ -19,7 +19,7 @@ st.title("Prueba conciliación")
 st.title("Arrastra los estados de cuenta")
 uploaded_files = {}
 # Creamos las columnas contenedor
-cols = {(b,c):None for b,ctas in CUENTAS for c in ctas}
+cols = {(b,c):None for b,ctas in CUENTAS.items() for c in ctas}
 for banco, cuentas in CUENTAS.items():
     col_list = st.columns(len(cuentas))
     for i,cuenta in enumerate(cuentas):

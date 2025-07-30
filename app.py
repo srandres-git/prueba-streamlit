@@ -20,31 +20,22 @@ st.header("Arrastra los estados de cuenta")
 uploaded_files = {}
 # Creamos las tabs por banco
 tabs = st.tabs(CUENTAS.keys())
-tab_dict = {banco: t for banco in CUENTAS.keys() for t in tabs}
+tab_dict = {banco: t for banco,t in zip(CUENTAS.keys(),tabs)}
 # Creamos las columnas contenedor
 cols = {(b,c):None for b,ctas in CUENTAS.items() for c in ctas}
 for banco, cuentas in CUENTAS.items():
-    with tab_dict[banco]:
-        col_list = st.columns(len(cuentas))
-        print(col_list)
-        for i,cuenta in enumerate(cuentas):
-            cols[(banco,cuenta)]= col_list[i]
-            # Agregamos los widget para arrastrar el archivo
-            with cols[(banco,cuenta)]:
-                uploaded_files[(banco,cuenta)] = st.file_uploader(
-                    f"Cuenta {cuenta}",
-                    type=['csv', 'xlsx', 'txt'],
-                    accept_multiple_files=False,
-                )
+    # tab_dict[banco].subheader(banco)
+    col_list = tab_dict[banco].columns(len(cuentas))
+    for i,cuenta in enumerate(cuentas):
+        cols[(banco,cuenta)]= col_list[i]
 # Agregamos los widget para arrastrar el archivo
-# for banco, cuentas in CUENTAS.items():
-#     for cuenta in cuentas:
-#         print(cols[(banco,cuenta)])
-#         uploaded_files[(banco,cuenta)] = cols[(banco,cuenta)].file_uploader(
-#             f"Cuenta {cuenta}",
-#             type=['csv', 'xlsx', 'txt'],
-#             accept_multiple_files=False,
-#         )
+for banco, cuentas in CUENTAS.items():
+    for cuenta in cuentas:
+        uploaded_files[(banco,cuenta)] = cols[(banco,cuenta)].file_uploader(
+            f"Cuenta {cuenta}",
+            type=['csv', 'xlsx', 'txt'],
+            accept_multiple_files=False,
+        )
 if uploaded_files:
     for (banco,cuenta), file in uploaded_files.items():
         if file:

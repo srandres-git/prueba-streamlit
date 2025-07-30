@@ -16,19 +16,18 @@ st.title("Prueba conciliación")
 # cuentas = CUENTAS[bank]
 # account = st.sidebar.selectbox("Selecciona cuenta", cuentas)
 
-st.title("Arrastra los estados de cuenta")
+st.header("Arrastra los estados de cuenta")
 uploaded_files = {}
 # Creamos las columnas contenedor
 cols = {(b,c):None for b,ctas in CUENTAS.items() for c in ctas}
 for banco, cuentas in CUENTAS.items():
+    st.subheader(banco)
     col_list = st.columns(len(cuentas))
     for i,cuenta in enumerate(cuentas):
         cols[(banco,cuenta)]= col_list[i]
 
 
 for banco, cuentas in CUENTAS.items():
-    
-    st.markdown(f"**{banco}**")
     for cuenta in cuentas:
         uploaded_files[(banco,cuenta)] = cols[(banco,cuenta)].file_uploader(
             f"Cuenta {cuenta}",

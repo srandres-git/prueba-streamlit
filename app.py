@@ -18,16 +18,24 @@ st.title("Prueba conciliación")
 
 st.title("Arrastra los estados de cuenta")
 uploaded_files = {}
+# Creamos las columnas contenedor
+cols = {(b,c):None for b,ctas in CUENTAS for c in ctas}
 for banco, cuentas in CUENTAS.items():
+    col_list = st.columns(len(cuentas))
+    for i,cuenta in enumerate(cuentas):
+        cols[(banco,cuenta)]= col_list[i]
+
+
+for banco, cuentas in CUENTAS.items():
+    
     st.markdown(f"**{banco}**")
     for cuenta in cuentas:
-        uploaded_files[(banco,cuenta)] = st.file_uploader(
+        uploaded_files[(banco,cuenta)] = cols[(banco,cuenta)].file_uploader(
             f"Cuenta {cuenta}",
             type=['csv', 'xlsx', 'txt'],
             accept_multiple_files=False,
-            width=100
         )
 if uploaded_files:
     for (banco,cuenta), file in uploaded_files.items():
         if file:
-            st.markdown(f'archivo subido de {banco} {cuenta}')
+            cols[(banco,cuenta)].markdown(f'archivo subido de {banco} {cuenta}')

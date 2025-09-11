@@ -7,3 +7,4 @@ st.write(f'Secreto: {st.secrets["my_secret"]}')
 ejecutivos_cxp = st.secrets["ejecutivos_cxp"]
 df = pd.DataFrame(ejecutivos_cxp)
 st.write("Tabla 'ejecutivos_cxp':")
+st.write(df)

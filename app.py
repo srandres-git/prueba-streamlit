@@ -102,4 +102,4 @@ filters = {"Region": ["North", "South"]}  # preselected filters
 
 container = st.container()
 dynamic_table(df, rows, cols, values, filters, container, format_func=lambda x: format_region(format_currency(x)),
-              sort_args={"by": ("Region"), "ascending": False}, top_n=5)
+              sort_args={"by": ("Sales", "B"), "ascending": False}, top_n=5)

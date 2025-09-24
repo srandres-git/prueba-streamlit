@@ -10,6 +10,9 @@ def dynamic_table(
     filters: dict[str, list],
     container,
     format_func: callable = None,
+    sort_args: list = None,
+    top_n: int = None,
+    bottom_n: int = None,
 ):
     """
     Create a dynamic pivot-like table in Streamlit with filters.
@@ -22,6 +25,9 @@ def dynamic_table(
         filters: dict of {column: list of preselected values}
         container: Streamlit container to display the table
         format_func: Optional function to format cell values
+        sort_args: Optional list of args for sorting the final table
+        top_n: Optional int to show only top N rows
+        bottom_n: Optional int to show only bottom N rows
     """
 
     # --- Filtering widgets ---
@@ -45,11 +51,19 @@ def dynamic_table(
         aggfunc=values,
         fill_value=0
     )
-
+    # sort the table if args provided
+    if sort_args:
+        pivot_df = pivot_df.sort_values(*sort_args)
+    # show only top N rows if specified
+    if top_n:
+        pivot_df = pivot_df.head(top_n)
+    # show only bottom N rows if specified
+    if bottom_n:
+        pivot_df = pivot_df.tail(bottom_n)
     # Reset index and start it on 1 so it shows nicely in Streamlit
     pivot_df = pivot_df.reset_index()
     pivot_df.index += 1
-
+     # Apply formatting function if provided
     if format_func:
         pivot_df = pivot_df.applymap(format_func)
     # 
@@ -87,4 +101,5 @@ values = {"Sales": "sum", "Quantity": "mean"}
 filters = {"Region": ["North", "South"]}  # preselected filters
 
 container = st.container()
-dynamic_table(df, rows, cols, values, filters, container, format_func=lambda x: format_region(format_currency(x)))
+dynamic_table(df, rows, cols, values, filters, container, format_func=lambda x: format_region(format_currency(x)),/
+              sort_args=["Region", False], top_n=5)

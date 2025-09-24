@@ -87,4 +87,4 @@ values = {"Sales": "sum", "Quantity": "mean"}
 filters = {"Region": ["North", "South"]}  # preselected filters
 
 container = st.container()
-dynamic_table(df, rows, cols, values, filters, container)
+dynamic_table(df, rows, cols, values, filters, container, format_func=lambda x: format_region(format_currency(x)))

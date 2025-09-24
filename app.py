@@ -10,7 +10,7 @@ def dynamic_table(
     filters: dict[str, list],
     container,
     format_func: callable = None,
-    sort_args: list = None,
+    sort_args: dict = None,
     top_n: int = None,
     bottom_n: int = None,
 ):
@@ -25,7 +25,7 @@ def dynamic_table(
         filters: dict of {column: list of preselected values}
         container: Streamlit container to display the table
         format_func: Optional function to format cell values
-        sort_args: Optional list of args for sorting the final table
+        sort_args: Optional keyword arguments for sorting the table
         top_n: Optional int to show only top N rows
         bottom_n: Optional int to show only bottom N rows
     """
@@ -53,7 +53,7 @@ def dynamic_table(
     )
     # sort the table if args provided
     if sort_args:
-        pivot_df = pivot_df.sort_values(*sort_args)
+        pivot_df = pivot_df.sort_values(**sort_args)
     # show only top N rows if specified
     if top_n:
         pivot_df = pivot_df.head(top_n)
@@ -102,4 +102,4 @@ filters = {"Region": ["North", "South"]}  # preselected filters
 
 container = st.container()
 dynamic_table(df, rows, cols, values, filters, container, format_func=lambda x: format_region(format_currency(x)),
-              sort_args=["Region", False], top_n=5)
+              sort_args={"by": "Region", "ascending": False}, top_n=5)

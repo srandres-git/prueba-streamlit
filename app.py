@@ -8,7 +8,8 @@ def dynamic_table(
     cols: list[str],
     values: dict[str, str],  # {column: aggfunc}
     filters: dict[str, list],
-    container
+    container,
+    format_func: callable = None,
 ):
     """
     Create a dynamic pivot-like table in Streamlit with filters.
@@ -20,6 +21,7 @@ def dynamic_table(
         values: dict of {column: aggfunc}
         filters: dict of {column: list of preselected values}
         container: Streamlit container to display the table
+        format_func: Optional function to format cell values
     """
 
     # --- Filtering widgets ---
@@ -44,13 +46,28 @@ def dynamic_table(
         fill_value=0
     )
 
-    # Reset index so it shows nicely in Streamlit
+    # Reset index and start it on 1 so it shows nicely in Streamlit
     pivot_df = pivot_df.reset_index()
+    pivot_df.index += 1
+
+    if format_func:
+        pivot_df = pivot_df.applymap(format_func)
+    # 
 
     # --- Display ---
-    container.dataframe(pivot_df)
+    container.table(pivot_df, border='horizontal')
 
+def format_currency(x):
+    if isinstance(x, (int, float)):
+        return f"${x:,.2f}"
+    return x
 
+def format_region(x):
+    if x=="North":
+        return f":blue[{x}]"
+    elif x=="South":
+        return f":red[{x}]"
+    return x
 # ---------------- Example usage ---------------- #
 st.title("Dynamic Pivot Table Example")
 
